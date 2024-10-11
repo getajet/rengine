@@ -10,7 +10,15 @@ ENV PYTHONUNBUFFERED=1
 # Set the working directory
 WORKDIR /usr/src/app
 
-# Install dependencies
+# Install system dependencies (including pg_config)
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
 COPY ./web/requirements.txt /usr/src/app/
 RUN pip install --no-cache-dir -r requirements.txt
 
